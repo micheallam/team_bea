@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\miche\PycharmProjects\SuperMarioBrosFinal\venv"
+VIRTUAL_ENV="D:\Projects\Team_BEA\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
