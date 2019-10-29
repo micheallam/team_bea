@@ -11,9 +11,9 @@ class main(object):
         #pygame.mixer.pre_init(44100, -16, 2, 1024)
         pygame.init()
         pygame.display.set_caption('Team Bea Mario') # Window title
-        pygame.display.set_mode((screen.width, screen.height))
+        pygame.display.set_mode((screen_width, screen_height))
 
-        self.screen = pygame.display.set_mode((screen.width, screen.height))
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.clock = pygame.time.Clock()
 
         self.objectWorld = map('1-1') # currentworld?
@@ -23,7 +23,7 @@ class main(object):
         self.run = True # Flag for starting the game
         self.moveRight = False
         self.moveLeft = False
-        self.jump = False
+        self.jump_up = False
         self.crouch = False # Goes into pipes or crouches
         self.shift = False # Runs when shift is held down
 
@@ -32,7 +32,7 @@ class main(object):
             self.input()
             self.update()
             self.render()
-            self.clock.tick(FPS)
+            self.clock.tick(fps)
 
     def input(self):
         if self.get_mm().currentGameState == 'Game':
@@ -53,7 +53,7 @@ class main(object):
                 elif event.key == K_LEFT:
                     self.moveLeft = True
                 elif event.key == K_UP or event.key == K_SPACE:
-                    self.jump = True
+                    self.jump_up = True
                 elif event.key == K_LSHIFT:
                     self.shift = True
 
@@ -64,7 +64,7 @@ class main(object):
                 if event.key == K_LEFT:
                     self.moveLeft = False
                 if event.key == K_UP or event.key == K_SPACE:
-                    self.jump = False
+                    self.jump_up = False
                 if event.key == K_LSHIFT:
                     self.shift = False
 
@@ -92,3 +92,6 @@ class main(object):
     #def get_sound(self):
         #return self.objectSound
 
+# Runs the game
+objectMain = main()
+objectMain.run_game()
