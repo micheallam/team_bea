@@ -2,17 +2,12 @@ import pygame
 
 from settings import *
 
-
+# Seperate file for the breaking animation of the bricks
 class PlatformDebris(object):
-    """
-
-    Debris which appears when you destroy a brick block.
-
-    """
+    
     def __init__(self, x, y):
         self.image = pygame.image.load('images/block_debris0.png').convert_alpha()
 
-        # 4 different parts
         self.rectangles = [
             pygame.Rect(x - 20, y + 16, 16, 16),
             pygame.Rect(x - 20, y - 16, 16, 16),
@@ -22,6 +17,7 @@ class PlatformDebris(object):
         self.vy = -4
         self.rect = None
 
+    # Causes particles to fall and phase through the floor
     def update(self, main):
         self.vy += gravity
 
@@ -34,7 +30,8 @@ class PlatformDebris(object):
 
         if self.rectangles[1].y > main.get_map().map_size[1] * 32:
             main.get_map().debris.remove(self)
-
+    
+    # Draws particles once the brick is broken
     def render(self, main):
         for rect in self.rectangles:
             self.rect = rect
