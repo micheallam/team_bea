@@ -1,6 +1,6 @@
 import pygame
 
-
+# Definition of all the in-game sound files
 class Sound(object):
     def __init__(self):
         self.sounds = {}
@@ -25,6 +25,7 @@ class Sound(object):
         self.sounds['fireball'] = pygame.mixer.Sound('sounds/fireball.wav')
         self.sounds['shot'] = pygame.mixer.Sound('sounds/shot.wav')
 
+    # Plays the background music 
     def play(self, name, loops, volume):
         self.sounds[name].play(loops=loops)
         self.sounds[name].set_volume(volume)
@@ -32,6 +33,7 @@ class Sound(object):
     def stop(self, name):
         self.sounds[name].stop()
 
+    # Speeds up the music when the timer has reached a certain time
     def fast_music(self, main):
         if main.get_map().get_name() == '1-1':
             self.stop('overworld')
