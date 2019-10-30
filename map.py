@@ -2,21 +2,21 @@ import pygame
 from pytmx.util_pygame import load_pygame
 
 from game_ui import game_ui
-from bg_object import bg_object
-from camera import camera
-from event import event
-from flag import flag
+from bgobject import BGObject
+from camera import Camera
+from event import Event
+from flag import Flag
 from settings import *
-from platform import platform
+from Platform import Platform
 from player import player
-from goombas import goombas
-from mushroom import mushroom
-from flower import flower
-from koopa import koopa
-from tube import tube
-from platform_debris import platform_debris
-from coin_debris import coin_debris
-from fireball import fireball
+from Goombas import Goombas
+from Mushroom import Mushroom
+from flower import Flower
+from Koopa import Koopa
+from Tube import Tube
+from PlatformDebris import PlatformDebris
+from CoinHit import CoinHit
+from fireball import Fireball
 from text import text
 
 
@@ -47,17 +47,17 @@ class Map(object):
         self.tick = 0
         self.time = 400
 
-        self.object_player = player(x_pos=128, y_pos=351)
-        self.object_camera = camera(self.map_size[0] * 32, 14)
-        self.object_event = event()
+        self.object_player = player(x=128, y=351)
+        self.object_camera = Camera(self.map_size[0] * 32, 14)
+        self.object_event = Event()
         self.object_game_ui = game_ui()
 
     def load_world_11(self):
-        data = load_pygame("worlds/1-1/W11.txt")
+        data = load_pygame("worlds/1-1/W11.tmx")
         self.map_size = (data.width, data.height)
 
-        self.sky = pygame.Surface((WINDOW_W, WINDOW_H))
-        self.sky.fill((pygame.Color((92, 148, 252))))
+        self.sky = pygame.Surface((screen_width, screen_height))
+        self.sky.fill((92, 148, 252))
 
         self.map = [[0] * data.height for i in range(data.width)]
 
@@ -75,17 +75,17 @@ class Map(object):
 
                             if tile_id == 22:
                                 image = (
-                                    image,                                   # 1
-                                    data.get_tile_image(0, 15, layer_num),   # 2
-                                    data.get_tile_image(1, 15, layer_num),   # 3
-                                    data.get_tile_image(2, 15, layer_num)    # activated
+                                    image,  # 1
+                                    data.get_tile_image(0, 15, layer_num),  # 2
+                                    data.get_tile_image(1, 15, layer_num),  # 3
+                                    data.get_tile_image(2, 15, layer_num)  # activated
                                 )
 
-                            self.map[x][y] = platform(x * data.tile_height, y * data.tile_width, image, tile_id)
+                            self.map[x][y] = Platform(x * data.tileheight, y * data.tilewidth, image, tile_id)
                             self.obj.append(self.map[x][y])
 
                         elif layer.name == 'Background':
-                            self.map[x][y] = bg_object(x * data.tile_height, y * data.tile_width, image)
+                            self.map[x][y] = BGObject(x * data.tileheight, y * data.tilewidth, image)
                             self.obj_bg.append(self.map[x][y])
             layer_num += 1
 
@@ -98,18 +98,18 @@ class Map(object):
         self.spawn_tube(179, 10)
 
         # Mobs
-        self.mobs.append(goombas(736, 352, False))
-        self.mobs.append(goombas(1295, 352, True))
-        self.mobs.append(goombas(1632, 352, False))
-        self.mobs.append(goombas(1672, 352, False))
-        self.mobs.append(goombas(5570, 352, False))
-        self.mobs.append(goombas(5620, 352, False))
+        self.mobs.append(Goombas(736, 352, False))
+        self.mobs.append(Goombas(1295, 352, True))
+        self.mobs.append(Goombas(1632, 352, False))
+        self.mobs.append(Goombas(1672, 352, False))
+        self.mobs.append(Goombas(5570, 352, False))
+        self.mobs.append(Goombas(5620, 352, False))
 
         self.map[21][8].bonus = 'mushroom'
         self.map[78][8].bonus = 'mushroom'
         self.map[109][4].bonus = 'mushroom'
 
-        self.flag = flag(6336, 48)
+        self.flag = Flag(6336, 48)
 
     def reset(self, reset_all):
         self.obj = []
@@ -178,32 +178,32 @@ class Map(object):
         return self.mobs
 
     def spawn_tube(self, x_coord, y_coord):
-        self.tubes.append(tube(x_coord, y_coord))
+        self.tubes.append(Tube(x_coord, y_coord))
 
-        for y in range(y_coord, 12): # 12 because it's ground level.
+        for y in range(y_coord, 12):  # 12 because it's ground level.
             for x in range(x_coord, x_coord + 2):
-                self.map[x][y] = platform(x * 32, y * 32, image=None, type_id=0)
+                self.map[x][y] = Platform(x * 32, y * 32, image=None, type_id=0)
 
     def spawn_mushroom(self, x, y):
-        self.get_mobs().append(mushroom(x, y, True))
+        self.get_mobs().append(Mushroom(x, y, True))
 
     def spawn_goombas(self, x, y, move_direction):
-        self.get_mobs().append(goombas(x, y, move_direction))
+        self.get_mobs().append(Goombas(x, y, move_direction))
 
     def spawn_koopa(self, x, y, move_direction):
-        self.get_mobs().append(koopa(x, y, move_direction))
+        self.get_mobs().append(Koopa(x, y, move_direction))
 
     def spawn_flower(self, x, y):
-        self.mobs.append(flower(x, y))
+        self.mobs.append(Flower(x, y))
 
     def spawn_debris(self, x, y, type):
         if type == 0:
-            self.debris.append(platform_debris(x, y))
+            self.debris.append(PlatformDebris(x, y))
         elif type == 1:
-            self.debris.append(coin_debris(x, y))
+            self.debris.append(CoinHit(x, y))
 
     def spawn_fireball(self, x, y, move_direction):
-        self.projectiles.append(fireball(x, y, move_direction))
+        self.projectiles.append(Fireball(x, y, move_direction))
 
     def spawn_score_text(self, x, y, score=None):
         if score is None:
@@ -218,41 +218,43 @@ class Map(object):
         self.obj.remove(object)
         self.map[object.rect.x // 32][object.rect.y // 32] = 0
 
-    def remove_shoot(self, shoot):
-        self.projectiles.remove(shoot)
+    def remove_whizbang(self, whizbang):
+        self.projectiles.remove(whizbang)
 
     def remove_text(self, text_object):
         self.text_objects.remove(text_object)
 
-    def update_player(self, core):
-        self.get_player().update(core)
+    def update_player(self, main):
+        self.get_player().update(main)
 
-    def update_entities(self, core):
+    def update_entities(self, main):
         for mob in self.mobs:
-            mob.update(core)
+            mob.update(main)
             if not self.in_event:
-                self.entity_collisions(core)
+                self.entity_collisions(main)
 
-    def update_time(self, core):
+    def update_time(self, main):
         if not self.in_event:
             self.tick += 1
             if self.tick % 40 == 0:
                 self.time -= 1
                 self.tick = 0
             if self.time == 100 and self.tick == 1:
-                core.get_sound().start_fast_music(core)
+                main.get_sound().start_fast_music(main)
             elif self.time == 0:
-                self.player_death(core)
+                self.player_death(main)
 
     def update_score_time(self):
         if self.m_points != 100:
             if pygame.time.get_ticks() > self.score_time + 750:
                 self.m_points //= 2
-    def entity_collisions(self, core):
-        if not core.get_map().get_player().unkillable:
+
+    def entity_collisions(self, main):
+        if not main.get_map().get_player().invincible:
             for mob in self.mobs:
-                mob.check_collision_with_player(core)
-    def try_spawn_mobs(self, core):
+                mob.check_collision_with_player(main)
+
+    def try_spawn_mobs(self, main):
         if self.get_player().rect.x > 2080 and not self.is_mob_spawned[0]:
             self.spawn_goombas(2495, 224, False)
             self.spawn_goombas(2560, 96, False)
@@ -270,80 +272,82 @@ class Map(object):
             self.spawn_goombas(4240, 352, False)
             self.is_mob_spawned[1] = True
 
-    def player_death(self, core):
+    def player_death(self, main):
         self.in_event = True
         self.get_player().reset_jump()
         self.get_player().reset_move()
-        self.get_player().numOfLives -= 1
+        self.get_player().lives -= 1
 
-        if self.get_player().numOfLives == 0:
-            self.get_event().start_kill(core, game_over=True)
+        if self.get_player().lives == 0:
+            self.get_event().start_death(main, game_over=True)
         else:
-            self.get_event().start_kill(core, game_over=False)
+            self.get_event().start_death(main, game_over=False)
 
-    def player_win(self, core):
+    def player_win(self, main):
         self.in_event = True
         self.get_player().reset_jump()
         self.get_player().reset_move()
-        self.get_event().start_win(core)
+        self.get_event().start_win(main)
 
-    def update(self, core):
-        self.update_entities(core)
-        if not core.get_map().in_event:
-            if self.get_player().inLevelUpAnimation:
-                self.get_player().change_powerlvl_animation()
-            elif self.get_player().inLevelDownAnimation:
-                self.get_player().change_powerlvl_animation()
-                self.update_player(core)
+    def update(self, main):
+        self.update_entities(main)
+        if not main.get_map().in_event:
+            if self.get_player().levelUp:
+                self.get_player().change_animation()
+            elif self.get_player().levelDown:
+                self.get_player().change_animation()
+                self.update_player(main)
             else:
-                self.update_player(core)
+                self.update_player(main)
         else:
-            self.get_event().update(core)
+            self.get_event().update(main)
         for debris in self.debris:
-            debris.update(core)
-        for shoot in self.projectiles:
-            shoot.update(core)
+            debris.update(main)
+        for whizbang in self.projectiles:
+            whizbang.update(main)
         for text_object in self.text_objects:
-            text_object.update(core)
+            text_object.update(main)
         if not self.in_event:
-            self.get_camera().update(core.get_map().get_player().rect)
-        self.try_spawn_mobs(core)
-        self.update_time(core)
+            self.get_camera().update(main.get_map().get_player().rect)
+        self.try_spawn_mobs(main)
+        self.update_time(main)
         self.update_score_time()
-    def render_map(self, core):
-        core.screen.blit(self.sky, (0, 0))
+
+    def render_map(self, main):
+        main.screen.blit(self.sky, (0, 0))
         for obj_group in (self.obj_bg, self.obj):
             for obj in obj_group:
-                obj.render(core)
+                obj.render(main)
         for tube in self.tubes:
-            tube.render(core)
-    def render(self, core):
-	
-        core.screen.blit(self.sky, (0, 0))
+            tube.render(main)
+
+    def render(self, main):
+
+        main.screen.blit(self.sky, (0, 0))
 
         for obj in self.obj_bg:
-            obj.render(core)
+            obj.render(main)
 
         for mob in self.mobs:
-            mob.render(core)
+            mob.render(main)
 
         for obj in self.obj:
-            obj.render(core)
+            obj.render(main)
 
         for tube in self.tubes:
-            tube.render(core)
+            tube.render(main)
 
-        for shoot in self.projectiles:
-            shoot.render(core)
+        for whizbang in self.projectiles:
+            whizbang.render(main)
 
         for debris in self.debris:
-            debris.render(core)
+            debris.render(main)
 
-        self.flag.render(core)
+        self.flag.render(main)
 
         for text_object in self.text_objects:
-            text_object.render_in_game(core)
+            text_object.render_in_game(main)
 
-        self.get_player().render(core)
+        self.get_player().render(main)
 
-        self.get_ui().render(core)
+        self.get_ui().render(main)

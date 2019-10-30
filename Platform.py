@@ -12,7 +12,7 @@ class Platform(object):
 
         self.type = 'Platform'
 
-        self.shake = False
+        self.shaking = False
         self.hit = True
         self.shakedelay = 0
 
@@ -40,23 +40,23 @@ class Platform(object):
             self.shakedelay -= 2
             self.rect.y -= 2
         else:
-            self.shakedelat += 2
+            self.shakedelay += 2
             self.rect.y += 2
         if self.shakedelay == -20:
-            self.shakingUp = False
+            self.hit = False
         if self.shakedelay == 0:
-            self.shake = False
+            self.shaking = False
             self.hit = True
 
     def spawn_bonus(self, main):
         self.isActivated = True
-        self.shake = True
+        self.shaking = True
         self.imageTick = 0
         self.currentImage = 3
 
         if self.bonus == 'mushroom':
             main.get_sound().play('mushroom_appear', 0, 0.5)
-            if main.get_map().get_player().powerLVL == 0:
+            if main.get_map().get_player().size == 0:
                 main.get_map().spawn_mushroom(self.rect.x, self.rect.y)
             else:
                 main.get_map().spawn_flower(self.rect.x, self.rect.y)
@@ -77,12 +77,12 @@ class Platform(object):
         if self.typeID == 22:
             if not self.isActivated:
                 self.update()
-            elif self.shake:
+            elif self.shaking:
                 self.shake()
             main.screen.blit(self.image[self.currentImage], main.get_map().get_camera().apply(self))
 
         # Brick block
-        elif self.typeID == 23 and self.shake:
+        elif self.typeID == 23 and self.shaking:
             self.shake()
             main.screen.blit(self.image, main.get_map().get_camera().apply(self))
 

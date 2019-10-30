@@ -11,9 +11,9 @@ class Mushroom(Entity):
         self.rect = pygame.Rect(x, y, 32, 32)
 
         if move_direction:
-            self.x_V = 1
+            self.vx = 1
         else:
-            self.x_V = -1
+            self.vx = -1
 
         self.spawned = False
         self.spawn_y = 0
@@ -21,7 +21,7 @@ class Mushroom(Entity):
 
     def check_collision_with_player(self, main):
         if self.rect.colliderect( main.get_map().get_player().rect):
-            main.get_map().get_player().set_powerlvl(2, main)
+            main.get_map().get_player().set_size(2, main)
             main.get_map().get_mobs().remove(self)
 
     def die(self, main, instantly, crushed):
@@ -37,13 +37,13 @@ class Mushroom(Entity):
     def update(self, main):
         if self.spawned:
             if not self.on_ground:
-                self.y_V += GRAVITY
+                self.vy += gravity
 
             blocks = main.get_map().get_blocks_for_collision(self.rect.x // 32, self.rect.y // 32)
-            self.update_x_pos(blocks)
-            self.update_y_pos(blocks)
+            self.move_horizontally(blocks)
+            self.move_vertically(blocks)
 
-            self.check_map_borders(main)
+            self.check_borders(main)
         else:
             self.spawn_animation()
 

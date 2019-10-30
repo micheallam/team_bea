@@ -17,11 +17,11 @@ class menu_manager(object):
         elif self.current_state == 'Loading':
             self.object_loading_menu.update(main)
         elif self.current_state == 'Game':
-            core.get_map().update(main)
+            main.get_map().update(main)
             
     def render(self, main):
         if self.current_state == 'MainMenu':
-            main.get_map()render_map(main)
+            main.get_map().render_map(main)
             self.object_main_menu.render(main)
         elif self.current_state == 'Loading':
             self.object_loading_menu.render(main)

@@ -1,24 +1,26 @@
 from os import environ
 import pygame
-from pygame.locals import*
+from pygame.locals import *
 from settings import *
-from map import map
-from menumanager import menumanager
+from map import Map
+from menu_manager import menu_manager
+from Sound import Sound
 
-class main(object):
+
+class Main(object):
     def __init__ (self):
-        #environ['SDL_VIDEO_CENTERED'] = '1' # ????
-        #pygame.mixer.pre_init(44100, -16, 2, 1024)
+        environ['SDL_VIDEO_CENTERED'] = '1'
+        pygame.mixer.pre_init(44100, -16, 2, 1024)
         pygame.init()
-        pygame.display.set_caption('Team Bea Mario') # Window title
+        pygame.display.set_caption('Team Bea Mario')
         pygame.display.set_mode((screen_width, screen_height))
 
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         self.clock = pygame.time.Clock()
 
-        self.objectWorld = map('1-1') # currentworld?
-        #self.objectSound = Sound()
-        #self.oMM = MenuManager(self)
+        self.object_world = Map('1-1')
+        self.object_sound = Sound()
+        self.object_menu_manager = menu_manager(self)
 
         self.run = True # Flag for starting the game
         self.moveRight = False
@@ -35,7 +37,7 @@ class main(object):
             self.clock.tick(fps)
 
     def input(self):
-        if self.get_mm().currentGameState == 'Game':
+        if self.get_mm().current_state == 'Game':
             # Places the player in the game
             self.make_player()
         else:
@@ -44,7 +46,7 @@ class main(object):
 
     def make_player(self):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT():
+            if event.type == pygame.QUIT:
                 self.run = False
             # If these keys are pressed down
             elif event.type == KEYDOWN:
@@ -84,14 +86,14 @@ class main(object):
         self.get_mm().render(self)
 
     def get_map(self):
-        return self.objectWorld # currentWorld???
+        return self.object_world
 
     def get_mm(self):
-        return self.oMM
+        return self.object_menu_manager
 
-    #def get_sound(self):
-        #return self.objectSound
+    def get_sound(self):
+        return self.object_sound
 
 # Runs the game
-objectMain = main()
+objectMain = Main()
 objectMain.run_game()

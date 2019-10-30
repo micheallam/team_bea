@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class player(object):
     def __init__(self, x, y):
         self.lives = 3
@@ -11,6 +12,7 @@ class player(object):
         self.invincibilityTime = 0
         self.levelUpTime = 0
         self.levelDownTime = 0
+        self.spriteTick = 0
 
         self.visible = True
         self.invincible = False
@@ -22,8 +24,8 @@ class player(object):
         # Fireball variables
         self.fireball_time = 0
         # Movements
-        self.vx
-        self.vy
+        self.vx = 0
+        self.vy = 0
         self.direction = True
         self.on_ground = False
         self.moving = False
@@ -178,9 +180,8 @@ class player(object):
                     if self.vx > max_run:
                         self.vx = max_run
                 # if it's not running, set movement to max walk
-                else:
-                     if self.vx > max_walk:
-                         self.vx = max_walk
+                elif self.vx > max_walk:
+                    self.vx = max_walk
             if self.vx < 0:
                 # Move to the left
                 if self.sprinting:
@@ -192,9 +193,9 @@ class player(object):
                         self.vx = -max_walk
 
         # Computation error
-        if 0 < self.x_vel < speed_decrease:
+        if 0 < self.vx < speed_decrease:
             self.vx = 0
-        if 0 > self.x_vel > -speed_decrease:
+        if 0 > self.vx > -speed_decrease:
             self.vx = 0
 
         if not self.on_ground:
@@ -214,7 +215,7 @@ class player(object):
         self.update_y_pos(blocks, main)
 
         # on_ground needs this piece of code
-        coord_y = self.vy.y // 32
+        coord_y = self.rect.y // 32
         if self.size > 0:
             coord_y += 1
         for block in main.get_map().get_blocks_below(self.rect.x // 32, coord_y):
@@ -227,7 +228,7 @@ class player(object):
             main.get_map().player_death(main)
 
         # End Flag collision check
-        if self.rect.colliderect(main.get_map().flag.pillar_rect):
+        if self.rect.colliderect(main.get_map().flag.pole_rect):
             main.get_map().player_win(main)
 
     def set_image(self, new_image):
@@ -309,7 +310,7 @@ class player(object):
 
                     elif self.vy < 0:
                         self.rect.top = block.rect.bottom
-                        self.vy = -self.y_vel / 3
+                        self.vy = -self.vy / 3
                         self.block_movement(main, block)
 
     # Function for when a block gets hit
@@ -481,7 +482,7 @@ class player(object):
     def shoot(self, main, x, y, orientation):
         main.get_map().spawn_fireball(x, y, orientation)
         main.get_sound().play('fireball', 0, 0.5)
-        self.next_fireball_time = pygame.time.get_ticks() + 400
+        self.fireball_time = pygame.time.get_ticks() + 400
 
     def add_coins(self, count):
         self.coins += count

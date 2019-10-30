@@ -10,8 +10,8 @@ class Fireball(object):
         self.rect = pygame.Rect(x, y, 16, 16)
         self.frame = 0
         self.direction = move_dir
-        self.x_V = 5 if move_dir else -5
-        self.y_V = 0
+        self.vx = 5 if move_dir else -5
+        self.vy = 0
 
         self.current_image = 0
         self.timer = 0
@@ -37,17 +37,17 @@ class Fireball(object):
             if self.timer % 10 == 0:
                 self.current_image += 1
             if self.current_image == 7:
-                main.get_map().remove_shoot(self)
+                main.get_map().remove_whizbang(self)
 
     def start_boom(self):
-        self.x_V = 0
-        self.y_V = 0
+        self.vx = 0
+        self.vy = 0
         self.current_image = 4
         self.timer = 0
         self.frame = -1
 
-    def update_x_pos(self, blocks):
-        self.rect.x += self.x_V
+    def move_horizontally(self, blocks):
+        self.rect.x += self.vx
         for block in blocks:
             if block != 0 and block.type != 'BGObject':
                 if pygame.Rect.colliderect(self.rect, block.rect):
@@ -55,34 +55,34 @@ class Fireball(object):
                     # Fireball blows up only when collides on x-axis
                     self.start_boom()
 
-    def update_y_pos(self, blocks):
-        self.rect.y += self.y_V
+    def move_vertically(self, blocks):
+        self.rect.y += self.vy
         for block in blocks:
             if block != 0 and block.type != 'BGObject':
                 if pygame.Rect.colliderect(self.rect, block.rect):
                     self.rect.bottom = block.rect.top
-                    self.y_V = -3
+                    self.vy = -3
 
-    def check_map_borders(self, main):
+    def check_borders(self, main):
         if self.rect.x <= 0:
-            main.get_map().remove_shoot(self)
+            main.get_map().remove_whizbang(self)
         elif self.rect.y > 448:
-            main.get_map().remove_shoot(self)
+            main.get_map().remove_whizbang(self)
 
     def move(self, main):
-        self.y_V += GRAVITY
+        self.vy += gravity
 
         blocks = main.get_map().get_blocks_for_collision(self.rect.x // 32, self.rect.y // 32)
-        self.update_y_pos(blocks)
-        self.update_x_pos(blocks)
+        self.move_vertically(blocks)
+        self.move_horizontally(blocks)
 
-        self.check_map_borders(main)
+        self.check_borders(main)
 
     def check_collision_with_mobs(self, main):
         for mob in main.get_map().get_mobs():
             if self.rect.colliderect(mob.rect):
                 if mob.collision:
-                    mob.die(main, instantly=False, crushed=False)
+                    mob.die(main, instantly=False, stomped=False)
                     self.start_boom()
 
     def update(self, main):

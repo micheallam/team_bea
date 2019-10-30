@@ -22,7 +22,7 @@ class Flower(Entity):
 
     def check_collision_with_player(self, main):
         if self.rect.colliderect(main.get_map().get_player().rect):
-            main.get_map().get_player().set_powerlvl(3, main)
+            main.get_map().get_player().set_size(3, main)
             main.get_map().get_mobs().remove(self)
 
     def update_image(self):
@@ -36,10 +36,10 @@ class Flower(Entity):
             self.current_image += 1
 
     def spawn_animation(self):
-        self.spawn_y -= 1
+        self.spawned_y -= 1
         self.rect.y -= 1
 
-        if self.spawn_y == -32:
+        if self.spawned_y == -32:
             self.spawned = True
 
     def update(self, main):

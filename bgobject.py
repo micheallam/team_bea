@@ -1,5 +1,6 @@
 import pygame
 
+
 class BGObject(object):
     # Parent class for background objects
     def __init__(self, x, y, image):

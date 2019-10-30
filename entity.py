@@ -1,5 +1,6 @@
 import pygame
 
+
 # Parent class for everything
 class Entity(object):
     def __init__(self):
@@ -40,7 +41,6 @@ class Entity(object):
                         self.on_ground = True
                         self.rect.bottom = block.rect.top
                         self.vy = 0
-
 
     def check_borders(self, main):
         if self.rect.y >= 448:

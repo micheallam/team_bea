@@ -1,6 +1,6 @@
 import pygame
 
-from Const import *
+from settings import *
 
 
 class PlatformDebris(object):
@@ -19,20 +19,20 @@ class PlatformDebris(object):
             pygame.Rect(x + 20, y + 16, 16, 16),
             pygame.Rect(x + 20, y - 16, 16, 16)
         ]
-        self.y_V = -4
+        self.vy = -4
         self.rect = None
 
     def update(self, main):
-        self.y_V += GRAVITY
+        self.vy += gravity
 
         for i in range(len(self.rectangles)):
-            self.rectangles[i].y += self.y_V
+            self.rectangles[i].y += self.vy
             if i < 2:
                 self.rectangles[i].x -= 1
             else:
                 self.rectangles[i].x += 1
 
-        if self.rectangles[1].y > main.get_map().mapSize[1] * 32:
+        if self.rectangles[1].y > main.get_map().map_size[1] * 32:
             main.get_map().debris.remove(self)
 
     def render(self, main):
