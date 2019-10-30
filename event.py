@@ -17,6 +17,7 @@ class Event(object):
         self.tick = 0
         self.score_tick = 0
 
+# Restores all initial values and resets them =======================================================================
     def reset(self):
         self.type = 0
 
@@ -29,7 +30,8 @@ class Event(object):
         self.player_in_castle = False
         self.tick = 0
         self.score_tick = 0
-
+    
+# Plays death animation =============================================================================================
     def start_death(self, main, game_over):
         self.type = 0
         self.delay = 4000
@@ -43,6 +45,7 @@ class Event(object):
 
         main.get_map().get_player().set_image(len(main.get_map().get_player().sprites))
 
+# Plays the win sounds and animations when the flag is reached ======================================================
     def start_win(self, main):
         self.type = 1
         self.delay = 2000
@@ -66,6 +69,7 @@ class Event(object):
             main.get_map().get_player().add_score(1000)
             main.get_map().spawn_score_text(main.get_map().get_player().rect.x + 16, main.get_map().get_player().rect.y, score=1000)
 
+# Updates all in game items ====================================================================================================
     def update(self, main):
         if self.type == 0:
             self.vy += gravity if self.vy < 6 else 6
@@ -82,7 +86,8 @@ class Event(object):
                     main.get_mm().object_loading_menu.set_text_type('GAME OVER', False)
                     main.get_mm().object_loading_menu.update_time()
                     main.get_sound().play('game_over', 0, 0.5)
-
+        
+ # Player sliding down animation =============================================================================================
         elif self.type == 1:
             if not self.player_in_castle:
                 if not main.get_map().flag.flag_spawn:
