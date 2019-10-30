@@ -37,4 +37,4 @@ class Sound(object):
     def fast_music(self, main):
         if main.get_map().get_name() == '1-1':
             self.stop('overworld')
-            self.play('overworld_fast', 99999, 0.5)
+            self.play('overworld_fast', -1, 0.5)
