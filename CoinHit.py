@@ -9,8 +9,11 @@ class CoinHit(object):
         self.y_offset = 0
         self.moving_up = True
 
+        # Timer flags 
         self.current_image = 0
         self.image_tick = 0
+        
+        # library of images
         self.images = [
             pygame.image.load('images/coin_an0.png').convert_alpha(),
             pygame.image.load('images/coin_an1.png').convert_alpha(),
@@ -18,6 +21,7 @@ class CoinHit(object):
             pygame.image.load('images/coin_an3.png').convert_alpha()
         ]
 
+    # updates the coins and goes through the images
     def update(self, main):
         self.image_tick += 1
 
@@ -27,7 +31,8 @@ class CoinHit(object):
         if self.current_image == 4:
             self.current_image = 0
             self.image_tick = 0
-
+        
+        # Block hit causes the coin to move up from its normal pos until it finishes the animation
         if self.moving_up:
             self.y_offset += self.vy
             self.rect.y += self.vy
@@ -39,6 +44,8 @@ class CoinHit(object):
             self.rect.y += self.vy
             if self.y_offset == 0:
                 main.get_map().debris.remove(self)
-
+    
+    
+    # Draws the coin onto the map
     def render(self, main):
         main.screen.blit(self.images[self.current_image], main.get_map().get_camera().apply(self))
