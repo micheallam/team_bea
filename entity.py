@@ -2,22 +2,27 @@ import pygame
 from settings import *
 
 
-# Parent class for everything
+# Parent class for everything that is interactable
 class Entity(object):
     def __init__(self):
+        
         # Image of Entity and position
         self.image = None
         self.rect = None
+        
         # State of the entity
         self.state = 0
+        
         # Variables that control the movement of the Entity
         self.vx = 0
         self.vy = 0
-        # Booleans Entity
+        
+        # Entitiy flags
         self.direction = True
         self.on_ground = False
         self.collision = True
 
+    # Creates movement for the object
     def move_horizontally(self, blocks):
         self.rect.x += self.vx
 
@@ -31,6 +36,7 @@ class Entity(object):
                         self.rect.left = block.rect.right
                         self.vx = -self.vx
 
+    # Allows the blocks to move up when hit
     def move_vertically(self, blocks):
         self.rect.y += self.vy
 
@@ -43,6 +49,7 @@ class Entity(object):
                         self.rect.bottom = block.rect.top
                         self.vy = 0
 
+    # Falling through a pit
     def check_borders(self, main):
         if self.rect.y >= 448:
             # Kill if you drop past border
@@ -67,11 +74,13 @@ class Mushroom(Entity):
             self.vx = 1
         else:
             self.vx = -1
-
+        
+        # Flags to spawn the mushroom
         self.spawned = False
         self.spawn_y = 0
         self.image = pygame.image.load('images/mushroom.png').convert_alpha()
 
+    # Mario eating the mushroom
     def check_collision_with_player(self, main):
         if self.rect.colliderect( main.get_map().get_player().rect):
             main.get_map().get_player().set_size(2, main)
@@ -80,6 +89,7 @@ class Mushroom(Entity):
     def die(self, main, instantly, crushed):
         main.get_map().get_mobs().remove(self)
 
+    # Mushroom moves up from the block one unit at a time until it fully spawns and starts to move
     def spawn_animation(self):
         self.spawn_y -= 1
         self.rect.y -= 1
@@ -87,6 +97,7 @@ class Mushroom(Entity):
         if self.spawn_y == - 32:
             self.spawned = True
 
+    # allows it to fall off ledges
     def update(self, main):
         if self.spawned:
             if not self.on_ground:
@@ -100,6 +111,7 @@ class Mushroom(Entity):
         else:
             self.spawn_animation()
 
+    # Draws the mushroom
     def render(self, main):
         main.screen.blit(self.image, main.get_map().get_camera().apply(self))
 
@@ -108,10 +120,12 @@ class Flower(Entity):
     def __init__(self, x, y):
         super().__init__()
 
+        # Spawning Flags and size
         self.rect = pygame.Rect(x, y, 32, 32)
         self.spawned = False
         self.spawned_y = 0
 
+        # Timer variables for animation
         self.current_image = 0
         self.timer = 0
         self.images = (
@@ -121,11 +135,13 @@ class Flower(Entity):
             pygame.image.load('images/flower3.png').convert_alpha()
         )
 
+    # Powers up the player when eaten
     def check_collision_with_player(self, main):
         if self.rect.colliderect(main.get_map().get_player().rect):
             main.get_map().get_player().set_size(3, main)
             main.get_map().get_mobs().remove(self)
 
+    # The flower has an idle animation (Flashing)
     def update_image(self):
         self.timer += 1
 
@@ -136,6 +152,7 @@ class Flower(Entity):
         elif self.timer % 15 == 0:
             self.current_image += 1
 
+    # The flower spawns up similar to the mushroom
     def spawn_animation(self):
         self.spawned_y -= 1
         self.rect.y -= 1
@@ -176,6 +193,7 @@ class Koopa(Entity):
         self.images.append(pygame.transform.flip(self.images[1], 180, 0))
         self.images.append(pygame.transform.flip(self.images[2], 0, 180))
 
+    # If enemy interacts with the player
     def check_collision_with_player(self, main):
         if self.collision:
             if self.rect.colliderect(main.get_map().get_player().rect):
@@ -189,6 +207,7 @@ class Koopa(Entity):
                         if not main.get_map().get_player().invincible:
                             main.get_map().get_player().Mario_size(0, main)
 
+    # enemies bounce off each other like walls
     def check_collision_with_mobs(self, main):
         for mob in main.get_map().get_mobs():
             if mob is not self:
@@ -196,6 +215,7 @@ class Koopa(Entity):
                     if mob.collision:
                         mob.die(main, instantly=False, stomped=False)
 
+    # Death animation
     def die(self, main, instantly, stomped):
         if not instantly:
             main.get_map().get_player().add_score(main.get_map().m_points)
@@ -206,6 +226,7 @@ class Koopa(Entity):
         else:
             main.get_map().get_mobs().remove(self)
 
+    # Adds the player a score for defeating them
     def change_state(self, main):
         self.state += 1
         self.current_image = 2
@@ -229,6 +250,7 @@ class Koopa(Entity):
         elif self.state == 3:
             self.die(main, instantly=False, stomped=False)
 
+    # Walking animation for the koopa
     def update_image(self):
         self.timer += 1
 
@@ -249,7 +271,9 @@ class Koopa(Entity):
                 self.current_image = 0
             self.timer = 0
 
+    # Checks for collision and allows them to fall off ledges
     def update(self, main):
+        # Walking state
         if self.state == 0:
             self.update_image()
 
@@ -269,6 +293,7 @@ class Koopa(Entity):
 
             self.check_borders(main)
 
+        # Shell state
         elif self.state == 2:
             if not self.on_ground:
                 self.vy += gravity
@@ -286,6 +311,7 @@ class Koopa(Entity):
 
             self.check_borders(main)
 
+    # Draws goomba on the screen 
     def render(self, main):
         main.screen.blit(self.images[self.current_image], main.get_map().get_camera().apply(self))
 
@@ -294,13 +320,17 @@ class Goombas(Entity):
         super().__init__()
         self.rect = pygame.Rect(x, y, 32, 32)
 
+        # Moves enemy left and right
         if move_direction:
             self.vx = 1
         else:
             self.vx = -1
-
+        
+        # Flag to check if the enemy was hit
         self.stomped = False
 
+        
+        # Animation timers and picture declarations
         self.current_image = 0
         self.frame = 0
         self.images = [
@@ -310,11 +340,13 @@ class Goombas(Entity):
         ]
         self.images.append(pygame.transform.flip(self.images[0], 0, 180))
 
+    # Animations the goomba
     def die(self, main, instantly, stomped):
         if not instantly:
             main.get_map().get_player().add_score(main.get_map().m_points)
             main.get_map().spawn_score_text(self.rect.x + 16, self.rect.y)
 
+            # The enemy squashed animation and removes itself
             if stomped:
                 self.stomped = True
                 self.frame = 0
@@ -323,16 +355,19 @@ class Goombas(Entity):
                 main.get_sound().play('kill_mob', 0, 0.5)
                 self.collision = False
 
+            # For interactions with the fireball from the player
             else:
                 self.vy = -4
                 self.current_image = 3
                 main.get_sound().play('shot', 0, 0.5)
                 self.state = -1
                 self.collision = False
-
+                
+        # Removes "dead" enemy from the game
         else:
             main.get_map().get_mobs().remove(self)
-
+    
+    # Kills player if the player hits the side of the enemy
     def check_collision_with_player(self, main):
         if self.collision:
             if self.rect.colliderect(main.get_map().get_player().rect):
@@ -345,6 +380,7 @@ class Goombas(Entity):
                         if not main.get_map().get_player().invincible:
                             main.get_map().get_player().set_size(0, main)
 
+    # Idle Animation                       
     def update_image(self):
         self.frame += 1
         if self.frame == 14:
@@ -353,6 +389,7 @@ class Goombas(Entity):
             self.current_image = 0
             self.frame = 0
 
+    # gives it interactions with map such as falling off and standing on a block
     def update(self, main):
         if self.state == 0:
             self.update_image()
@@ -365,16 +402,19 @@ class Goombas(Entity):
             self.move_vertically(blocks)
 
             self.check_borders(main)
-
+        
+        # Getting hit by player
         elif self.state == -1:
             if self.stomped:
                 self.frame += 1
                 if self.frame == 50:
                     main.get_map().get_mobs().remove(self)
+            # Falling down
             else:
                 self.vy += gravity
                 self.rect.y += self.vy
                 self.check_borders(main)
 
+    # Draws enemy on the screen
     def render(self, main):
         main.screen.blit(self.images[self.current_image], main.get_map().get_camera().apply(self))
