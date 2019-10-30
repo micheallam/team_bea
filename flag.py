@@ -1,6 +1,6 @@
 import pygame
 
-
+# The flag is seperate from the pole to allow animation
 class Flag(object):
     def __init__(self, x, y):
         self.rect = None
@@ -14,16 +14,20 @@ class Flag(object):
         self.flag_image = pygame.image.load('images/flag.png').convert_alpha()
         self.flag_rect = pygame.Rect(x - 18, y + 16, 32, 32)
 
+        
+ # Moves the flag down when the pole is touched ======================================================================
     def move_flag_down(self):
         self.flag_offset += 3
         self.flag_rect.y += 3
 
         if self.flag_offset >= 255:
             self.flag_spawn = True
-
+            
+# Draws flag onto the screen ==========================================================================================
     def render(self, main):
         self.rect = self.pole_rect
         main.screen.blit(self.pole_image, main.get_map().get_camera().apply(self))
 
         self.rect = self.flag_rect
         main.screen.blit(self.flag_image, main.get_map().get_camera().apply(self))
+ 
