@@ -6,6 +6,8 @@ from map import Map
 from menu_manager import menu_manager
 from Sound import Sound
 
+# Main loop for the game
+# 
 
 class Main(object):
     def __init__ (self):
@@ -22,13 +24,15 @@ class Main(object):
         self.object_sound = Sound()
         self.object_menu_manager = menu_manager(self)
 
-        self.run = True # Flag for starting the game
+        # initial flags
+        self.run = True
         self.moveRight = False
         self.moveLeft = False
         self.jump_up = False
-        self.crouch = False # Goes into pipes or crouches
+        self.crouch = False
         self.shift = False # Runs when shift is held down
 
+# Main game loop ========================================================================================================= 
     def run_game(self):
         while self.run:
             self.input()
@@ -43,12 +47,13 @@ class Main(object):
         else:
             # Makes the menu if the game isnt running
             self.create_menu()
-
+            
+# Player movement event ===================================================================================================
     def make_player(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.run = False
-            # If these keys are pressed down
+            # Keypress
             elif event.type == KEYDOWN:
                 if event.key == K_RIGHT:
                     self.moveRight = True
@@ -59,7 +64,7 @@ class Main(object):
                 elif event.key == K_LSHIFT:
                     self.shift = True
 
-            # If these keys are let go
+            # Key released
             elif event.type == KEYUP:
                 if event.key == K_RIGHT:
                     self.moveRight = False
@@ -70,6 +75,7 @@ class Main(object):
                 if event.key == K_LSHIFT:
                     self.shift = False
 
+# Creates main menu =========================================================================================================                    
     def create_menu(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,6 +101,6 @@ class Main(object):
         return self.object_sound
 
 
-# Runs the game
+# Initializes and runs game loop ==============================================================================================
 objectMain = Main()
 objectMain.run_game()
