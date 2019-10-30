@@ -16,7 +16,7 @@ class loading_menu(object):
         if pygame.time.get_ticks() >= self.now + (5250 if not self.loading_type else 2500):
             if self.loading_type:
                 main.object_menu_manager.current_state = 'Game'
-                main.get_sound().play('overworld', -1, 0)
+                main.get_sound().play('overworld', -1, 0.5)
                 main.get_map().in_event = False
             else:
                 main.object_menu_manager.current_state = 'MainMenu'
