@@ -57,7 +57,7 @@ class Entity(object):
         if self.rect.x <= 1 and self.vx < 0:
             self.vx = -self.vx
 
-    def die(self, main, instantly, crushed):
+    def die(self, main, instantly, stomped):
         pass
 
     def render(self, main):
@@ -86,7 +86,7 @@ class Mushroom(Entity):
             main.get_map().get_player().set_size(2, main)
             main.get_map().get_mobs().remove(self)
 
-    def die(self, main, instantly, crushed):
+    def die(self, main, instantly, stomped):
         main.get_map().get_mobs().remove(self)
 
     # Mushroom moves up from the block one unit at a time until it fully spawns and starts to move
@@ -205,7 +205,7 @@ class Koopa(Entity):
                         main.get_map().get_player().jump_on_mob()
                     else:
                         if not main.get_map().get_player().invincible:
-                            main.get_map().get_player().Mario_size(0, main)
+                            main.get_map().get_player().set_size(0, main)
 
     # enemies bounce off each other like walls
     def check_collision_with_mobs(self, main):
