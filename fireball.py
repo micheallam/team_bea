@@ -12,7 +12,8 @@ class Fireball(object):
         self.direction = move_dir
         self.vx = 5 if move_dir else -5
         self.vy = 0
-
+        
+        # Defines images and animation timers
         self.current_image = 0
         self.timer = 0
         self.images = [pygame.image.load('images/fireball.png').convert_alpha()]
@@ -23,6 +24,7 @@ class Fireball(object):
         self.images.append(pygame.image.load('images/firework1.png').convert_alpha())
         self.images.append(pygame.image.load('images/firework2.png').convert_alpha())
 
+# Animates the fire moving ===============================================================================================        
     def update_image(self, main):
         self.timer += 1
 
@@ -39,6 +41,7 @@ class Fireball(object):
             if self.current_image == 7:
                 main.get_map().remove_whizbang(self)
 
+# When fire collides with an object ==================================================================================================                
     def start_boom(self):
         self.vx = 0
         self.vy = 0
@@ -46,6 +49,7 @@ class Fireball(object):
         self.timer = 0
         self.frame = -1
 
+# Moves the fire to the right ======================================================================================================        
     def move_horizontally(self, blocks):
         self.rect.x += self.vx
         for block in blocks:
@@ -55,6 +59,7 @@ class Fireball(object):
                     # Fireball blows up only when collides on x-axis
                     self.start_boom()
 
+ # Bouncing aspect of animation ======================================================================================================                   
     def move_vertically(self, blocks):
         self.rect.y += self.vy
         for block in blocks:
@@ -63,6 +68,7 @@ class Fireball(object):
                     self.rect.bottom = block.rect.top
                     self.vy = -3
 
+ # removes fireball when interacting ===================================================================================================                
     def check_borders(self, main):
         if self.rect.x <= 0:
             main.get_map().remove_whizbang(self)
@@ -78,6 +84,7 @@ class Fireball(object):
 
         self.check_borders(main)
 
+ # Sets kill flags for enemies if collided ======================================================================================================
     def check_collision_with_mobs(self, main):
         for mob in main.get_map().get_mobs():
             if self.rect.colliderect(mob.rect):
