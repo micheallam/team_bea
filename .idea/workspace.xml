@@ -3,28 +3,21 @@
   <component name="ChangeListManager">
     <list default="true" id="92455f44-c549-4b86-8c0e-b26980b401ec" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Goombas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Goombas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Koopa.py" beforeDir="false" afterPath="$PROJECT_DIR$/Koopa.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Mushroom.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mushroom.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Platform.py" beforeDir="false" afterPath="$PROJECT_DIR$/Platform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlatformDebris.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlatformDebris.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sound.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sound.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bgobject.py" beforeDir="false" afterPath="$PROJECT_DIR$/bgobject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/camera.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Goombas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Koopa.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mushroom.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/entity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/event.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fireball.py" beforeDir="false" afterPath="$PROJECT_DIR$/fireball.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flagL.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/flagL.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flower.py" beforeDir="false" afterPath="$PROJECT_DIR$/flower.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/game_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flower.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/flag.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/flag.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/flagL.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/title.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/title.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/loading_menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/loading_menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map.py" beforeDir="false" afterPath="$PROJECT_DIR$/map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/menu_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/menu_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/text.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

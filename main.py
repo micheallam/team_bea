@@ -94,6 +94,7 @@ class Main(object):
     def get_sound(self):
         return self.object_sound
 
+
 # Runs the game
 objectMain = Main()
 objectMain.run_game()

@@ -1,6 +1,6 @@
 screen_width = 800
 screen_height = 448
-fps = 60
+fps = 100
 
 # Mario Physics
 gravity = .3

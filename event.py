@@ -79,13 +79,13 @@ class Event(object):
                     main.get_sound().play('overworld', 9999999, 0.5)
                 else:
                     main.get_mm().current_state = 'Loading'
-                    main.get_mm().object_loading_menu.set_text_and_type('GAME OVER', False)
+                    main.get_mm().object_loading_menu.set_text_type('GAME OVER', False)
                     main.get_mm().object_loading_menu.update_time()
                     main.get_sound().play('game_over', 0, 0.5)
 
         elif self.type == 1:
             if not self.player_in_castle:
-                if not main.get_map().flag.flag_omitted:
+                if not main.get_map().flag.flag_spawn:
                     main.get_map().get_player().set_image(5)
                     main.get_map().flag.move_flag_down()
                     main.get_map().get_player().flag_animation_move(main, False)
@@ -110,7 +110,7 @@ class Event(object):
                         self.time = pygame.time.get_ticks()
                     elif pygame.time.get_ticks() >= self.time + self.delay:
                         main.get_mm().current_state = 'Loading'
-                        main.get_mm().object_loading_menu.set_text_and_type('BY S&D :)', False)
+                        main.get_mm().object_loading_menu.set_text_type('1-2 DLC $4.99: Available in E-Shop.', False)
                         main.get_mm().object_loading_menu.update_time()
                         main.get_sound().play('game_over', 0, 0.5)
 

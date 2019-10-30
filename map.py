@@ -1,6 +1,5 @@
 import pygame
 from pytmx.util_pygame import load_pygame
-
 from game_ui import game_ui
 from bgobject import BGObject
 from camera import Camera
@@ -9,10 +8,12 @@ from flag import Flag
 from settings import *
 from Platform import Platform
 from player import player
-from Goombas import Goombas
-from Mushroom import Mushroom
-from flower import Flower
-from Koopa import Koopa
+
+from entity import Goombas
+from entity import Mushroom
+from entity import Flower
+from entity import Koopa
+
 from Tube import Tube
 from PlatformDebris import PlatformDebris
 from CoinHit import CoinHit
