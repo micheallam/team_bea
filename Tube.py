@@ -1,6 +1,6 @@
 import pygame
 
-
+# Creates tube object in the game
 class Tube(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
