@@ -1,17 +1,16 @@
 import pygame
-from main import *
 
 
 class game_ui(object):
     def __init__(self):
-        self.font = pygame.font.Font(SysFont, 20)
+        self.font = pg.font.Font(SysFont, 20)
         self.text = 'SCORE COINS WORLD TIME LIVES'
         
     def render(self, main):
     x = 10
     for word in self.text.split(' '):
         rect = self.font.render(word, False, (255, 255, 255))
-        main.screen.blit(rect, (x, 0))
+        core.screen.blit(rect, (x, 0))
         x += 168
         
     text = self.font.render(str(main.get_map().get_player().score), False, (255, 255, 255))
