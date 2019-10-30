@@ -10,3 +10,5 @@ jump = 8.2
 max_walk = 2.5
 max_run = 3.5
 max_fall = 7
+
+min_x = 0

@@ -6,7 +6,7 @@ class player(object):
     def __init__(self, x, y):
         self.lives = 3
         self.score = 0
-        self.coins = 0
+        self.coins = 98
         # The state player is in
         self.size = 0
         self.invincibilityTime = 0
@@ -142,6 +142,9 @@ class player(object):
             # Negative moves to the left
             self.vx -= speed_increase
             self.direction = False
+            if self.rect.x <= 0:
+                self.vx = 0
+                self.rect.x = 0
         if not main.jump_up:
             self.mid_jump = False
         elif main.jump_up:
@@ -342,7 +345,7 @@ class player(object):
 
         if reset_all:
             self.score = 0
-            self.coins = 0
+            self.coins = 98
             self.lives = 3
 
             self.visible = True
@@ -486,6 +489,9 @@ class player(object):
 
     def add_coins(self, count):
         self.coins += count
+        if self.coins >= 100:
+            self.coins = 0
+            self.lives += 1
 
     def add_score(self, count):
         self.score += count

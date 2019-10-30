@@ -10,6 +10,7 @@ class Camera(object):
 
     def camera(self, screen_rect):
         x, y = screen_rect.x, screen_rect.y
+        y = screen_rect.y
         width, height = self.rect.width, self.rect.height
         x, y = (-x + screen_width / 2 - screen_rect.width / 2), (-y + screen_height / 2 - screen_rect.height)
 
