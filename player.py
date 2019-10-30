@@ -37,92 +37,45 @@ class player(object):
         self.rect = pygame.Rect(x, y, 32, 32)
 
     def load_sprites(self):
+        # Little mario sprites ======================================================================
         self.sprites = [
-            # 0 Small, stay
             pygame.image.load('images/Mario/mario.png'),
-
-            # 1 Small, move 0
             pygame.image.load('images/Mario/mario_move0.png'),
-
-            # 2 Small, move 1
             pygame.image.load('images/Mario/mario_move1.png'),
-
-            # 3 Small, move 2
             pygame.image.load('images/Mario/mario_move2.png'),
-
-            # 4 Small, jump
             pygame.image.load('images/Mario/mario_jump.png'),
-
-            # 5 Small, end 0
             pygame.image.load('images/Mario/mario_end.png'),
-
-            # 6 Small, end 1
             pygame.image.load('images/Mario/mario_end1.png'),
-
-            # 7 Small, stop
             pygame.image.load('images/Mario/mario_st.png'),
 
-            # =============================================
-
-            # 8 Big, stay
+        # Super Mario Sprites ================================================================================
             pygame.image.load('images/Mario/mario1.png'),
-
-            # 9 Big, move 0
             pygame.image.load('images/Mario/mario1_move0.png'),
-
-            # 10 Big, move 1
             pygame.image.load('images/Mario/mario1_move1.png'),
-
-            # 11 Big, move 2
             pygame.image.load('images/Mario/mario1_move2.png'),
-
-            # 12 Big, jump
             pygame.image.load('images/Mario/mario1_jump.png'),
-
-            # 13 Big, end 0
             pygame.image.load('images/Mario/mario1_end.png'),
-
-            # 14 Big, end 1
             pygame.image.load('images/Mario/mario1_end1.png'),
-
-            # 15 Big, stop
             pygame.image.load('images/Mario/mario1_st.png'),
 
-            # =============================================
-
-            # 16 Big_fireball, stay
+        # Fire Mario Sprites ================================================================================
             pygame.image.load('images/Mario/mario2.png'),
-
-            # 17 Big_fireball, move 0
             pygame.image.load('images/Mario/mario2_move0.png'),
-
-            # 18 Big_fireball, move 1
             pygame.image.load('images/Mario/mario2_move1.png'),
-
-            # 19 Big_fireball, move 2
             pygame.image.load('images/Mario/mario2_move2.png'),
-
-            # 20 Big_fireball, jump
             pygame.image.load('images/Mario/mario2_jump.png'),
-
-            # 21 Big_fireball, end 0
             pygame.image.load('images/Mario/mario2_end.png'),
-
-            # 22 Big_fireball, end 1
             pygame.image.load('images/Mario/mario2_end1.png'),
-
-            # 23 Big_fireball, stop
             pygame.image.load('images/Mario/mario2_st.png'),
         ]
 
-        # Left side
         for i in range(len(self.sprites)):
             self.sprites.append(pygame.transform.flip(self.sprites[i], 180, 0))
 
-        # Power level changing, right
+        # Flips the images Right to avoid having too many sprites loaded
         self.sprites.append(pygame.image.load('images/Mario/mario_lvlup.png').convert_alpha())
 
-        # Power level changing, left
+        # Flips the images left
         self.sprites.append(pygame.transform.flip(self.sprites[-1], 180, 0))
 
         # Death
@@ -133,6 +86,7 @@ class player(object):
         self.update_image(main)
         self.update_invincible_time()
 
+# Controls mario's speed and jumping mechanics ======================================================================
     def player_physics(self, main):
         if main.moveRight:
             # Positive moves to the right
@@ -158,7 +112,8 @@ class player(object):
                     main.get_sound().play('big_mario_jump', 0, 0.5)
                 else:
                     main.get_sound().play('small_mario_jump', 0, 0.5)
-        # Fireball shooting and sprinting
+
+ # Checks if the player is running ========================================================================================                   
         self.sprinting = False
         # if shift is being held down
         if main.shift:
@@ -170,6 +125,7 @@ class player(object):
                             # Shoot the fireball
                             self.shoot(main, self.rect.x, self.rect.y, self.direction)
 
+ # Player walks normally if not holding shift                           
         if not (main.moveRight or main.moveLeft):
             if self.vx > 0:
                 self.vx -= speed_decrease
@@ -194,8 +150,8 @@ class player(object):
                 else:
                     if (-self.vx) > max_walk:
                         self.vx = -max_walk
-
-        # Computation error
+                        
+# Leftover momentum when running or walking ======================================================================
         if 0 < self.vx < speed_decrease:
             self.vx = 0
         if 0 > self.vx > -speed_decrease:
@@ -217,7 +173,7 @@ class player(object):
         self.rect.y += self.vy
         self.update_y_pos(blocks, main)
 
-        # on_ground needs this piece of code
+ # Checks if mario is on the ground and not jumping ======================================================================
         coord_y = self.rect.y // 32
         if self.size > 0:
             coord_y += 1
@@ -281,7 +237,7 @@ class player(object):
                 self.spriteTick = 0
                 self.set_image(4)
 
-    # Function for the invincibility time when mario gets hit
+    # Function for the invincibility time when mario gets hit ======================================================================
     def update_invincible_time(self):
         if self.invincible:
             self.invincibilityTime -= 1
@@ -316,7 +272,7 @@ class player(object):
                         self.vy = -self.vy / 3
                         self.block_movement(main, block)
 
-    # Function for when a block gets hit
+    # Function for when a block gets hit =================================================================================================
     def block_movement(self, main, block):
         # Question Block
         if block.typeID == 22:
@@ -373,7 +329,7 @@ class player(object):
         self.vx = 0
         self.vy = 0
 
-    # If player jumps on a mob
+    # If player jumps on an enemy he jumps up again slightly ======================================================================
     def jump_on_mob(self):
         self.mid_jump = True
         self.vy = -4
@@ -411,7 +367,7 @@ class player(object):
             main.get_map().spawn_score_text(self.rect.x + 16, self.rect.y, score=1000)
             self.add_score(1000)
 
-    # The transition between small and big player
+    # when mario gets a power up ============================================================================================
     def change_animation(self):
 
         if self.levelDown:
@@ -448,6 +404,7 @@ class player(object):
                 self.rect.y += 16
                 self.rect.height = 32
 
+# Mario's animations when he is on the flag pole ======================================================================                
     def flag_animation_move(self, main, walk_to_castle):
         if walk_to_castle:
             self.direction = True
@@ -482,11 +439,13 @@ class player(object):
             if main.get_map().flag.flag_rect.y + 20 > self.rect.y + self.rect.height:
                 self.rect.y += 3
 
+# Plays the shooting sound when fire flower is obtained ======================================================================                
     def shoot(self, main, x, y, orientation):
         main.get_map().spawn_fireball(x, y, orientation)
         main.get_sound().play('fireball', 0, 0.5)
         self.fireball_time = pygame.time.get_ticks() + 400
 
+# Keeps track of coin count and if player gets 100 coins a life is gained and coins are reset       
     def add_coins(self, count):
         self.coins += count
         if self.coins >= 100:
