@@ -7,7 +7,7 @@ from menu_manager import menu_manager
 from Sound import Sound
 
 # Main loop for the game
-# 
+# project is a mix of team coding and resources found online used as reference 
 
 class Main(object):
     def __init__ (self):
