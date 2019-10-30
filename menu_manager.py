@@ -3,7 +3,7 @@ import pygame
 from loading_menu import loading_menu
 from main_menu import main_menu
 
-
+# Flags 
 class menu_manager(object):
     def __init__(self, main):
         self.current_state = 'MainMenu'
@@ -18,7 +18,8 @@ class menu_manager(object):
             self.object_loading_menu.update(main)
         elif self.current_state == 'Game':
             main.get_map().update(main)
-            
+    
+    # draws the object into the screen
     def render(self, main):
         if self.current_state == 'MainMenu':
             main.get_map().render_map(main)
