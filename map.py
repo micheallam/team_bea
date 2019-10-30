@@ -9,18 +9,20 @@ from settings import *
 from Platform import Platform
 from player import player
 
+# Entity imports
 from entity import Goombas
 from entity import Mushroom
 from entity import Flower
 from entity import Koopa
 
+# Misc imports
 from Tube import Tube
 from PlatformDebris import PlatformDebris
 from CoinHit import CoinHit
 from fireball import Fireball
 from text import text
 
-
+# Creates the map and initializes several lists
 class Map(object):
     def __init__(self, world_num):
         self.obj = []
@@ -40,6 +42,7 @@ class Map(object):
         self.world_num = world_num
         self.load_world_11()
 
+        # enemies spawn when the player is a set distance from them
         self.is_mob_spawned = [False, False]
         self.m_points = 100
         self.score_time = 0
@@ -48,11 +51,13 @@ class Map(object):
         self.tick = 0
         self.time = 400
 
+        # General camera settings
         self.object_player = player(x=128, y=351)
         self.object_camera = Camera(self.map_size[0] * 32, 14)
         self.object_event = Event()
         self.object_game_ui = game_ui()
 
+# uses a file to load in pre determined locations of the world via text file        
     def load_world_11(self):
         data = load_pygame("worlds/1-1/W11.tmx")
         self.map_size = (data.width, data.height)
@@ -62,6 +67,7 @@ class Map(object):
 
         self.map = [[0] * data.height for i in range(data.width)]
 
+        # Sets the different layers so mario does not interact with all items on the screen
         layer_num = 0
         for layer in data.visible_layers:
             for y in range(data.height):
@@ -90,7 +96,7 @@ class Map(object):
                             self.obj_bg.append(self.map[x][y])
             layer_num += 1
 
-        # tubes
+# Specific positons of the world object ======================================================================
         self.spawn_tube(28, 10)
         self.spawn_tube(37, 9)
         self.spawn_tube(46, 8)
@@ -112,6 +118,7 @@ class Map(object):
 
         self.flag = Flag(6336, 48)
 
+# upon death, the game reinitializes all objects ======================================================================        
     def reset(self, reset_all):
         self.obj = []
         self.obj_bg = []
@@ -135,6 +142,7 @@ class Map(object):
         self.get_player().reset(reset_all)
         self.get_camera().reset()
 
+# Returns the UI information ============================================================================================        
     def get_name(self):
         if self.world_num == '1-1':
             return '1-1'
@@ -151,6 +159,7 @@ class Map(object):
     def get_ui(self):
         return self.object_game_ui
 
+# Collides with the sides and top of a block ======================================================================    
     def get_blocks_for_collision(self, x, y):
         return (
             self.map[x][y - 1],
@@ -168,13 +177,14 @@ class Map(object):
             self.map[x][y + 3],
             self.map[x + 1][y + 3]
         )
-
+# Collides with the bottom of the block ======================================================================
     def get_blocks_below(self, x, y):
         return (
             self.map[x][y + 1],
             self.map[x + 1][y + 1]
         )
-
+    
+# Several spawn declarations of various objects ======================================================================
     def get_mobs(self):
         return self.mobs
 
@@ -215,6 +225,7 @@ class Map(object):
         else:
             self.text_objects.append(text(str(score), 16, (x, y)))
 
+# Various removal of object definitions ======================================================================            
     def remove_object(self, object):
         self.obj.remove(object)
         self.map[object.rect.x // 32][object.rect.y // 32] = 0
@@ -225,6 +236,7 @@ class Map(object):
     def remove_text(self, text_object):
         self.text_objects.remove(text_object)
 
+# Various Update defitinitions ====================================================================================   
     def update_player(self, main):
         self.get_player().update(main)
 
@@ -273,6 +285,7 @@ class Map(object):
             self.spawn_goombas(4240, 352, False)
             self.is_mob_spawned[1] = True
 
+    # when the player dies the values are all updated accordingly       
     def player_death(self, main):
         self.in_event = True
         self.get_player().reset_jump()
@@ -283,13 +296,15 @@ class Map(object):
             self.get_event().start_death(main, game_over=True)
         else:
             self.get_event().start_death(main, game_over=False)
-
+    
+    # Starts the win animation at the end of the level
     def player_win(self, main):
         self.in_event = True
         self.get_player().reset_jump()
         self.get_player().reset_move()
         self.get_event().start_win(main)
 
+    # updates the world and handles flags for animations ==================================================================
     def update(self, main):
         self.update_entities(main)
         if not main.get_map().in_event:
@@ -322,6 +337,7 @@ class Map(object):
         for tube in self.tubes:
             tube.render(main)
 
+    # Draws all objects into the game =====================================================================================================        
     def render(self, main):
 
         main.screen.blit(self.sky, (0, 0))
