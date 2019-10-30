@@ -43,7 +43,7 @@ class Map(object):
         self.load_world_11()
 
         # enemies spawn when the player is a set distance from them
-        self.is_mob_spawned = [False, False]
+        self.is_mob_spawned = [False, False, False, False]
         self.m_points = 100
         self.score_time = 0
 
@@ -125,6 +125,7 @@ class Map(object):
         self.tubes = []
         self.debris = []
         self.mobs = []
+        self.is_mob_spawned = [False, False, False, False]
 
         self.in_event = False
         self.flag = None
@@ -273,7 +274,7 @@ class Map(object):
             self.spawn_goombas(2560, 96, False)
             self.is_mob_spawned[0] = True
 
-        elif self.get_player().rect.x > 2460 and not self.is_mob_spawned[1]:
+        elif self.get_player().rect.x > 2700 and not self.is_mob_spawned[1]:
             self.spawn_goombas(3200, 352, False)
             self.spawn_goombas(3250, 352, False)
             self.spawn_koopa(3400, 352, False)
@@ -283,7 +284,7 @@ class Map(object):
             self.spawn_goombas(4110, 352, False)
             self.spawn_goombas(4190, 352, False)
             self.spawn_goombas(4240, 352, False)
-            self.is_mob_spawned[1] = True
+            self.is_mob_spawned[3] = True
 
     # when the player dies the values are all updated accordingly       
     def player_death(self, main):
