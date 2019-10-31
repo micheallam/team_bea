@@ -278,8 +278,14 @@ class Map(object):
             self.spawn_goombas(3200, 352, False)
             self.spawn_goombas(3250, 352, False)
             self.spawn_koopa(3400, 352, False)
+            self.is_mob_spawned[1] = True	
+            
+        elif self.get_player().rect.x > 3300 and not self.is_mob_spawned[2]:
             self.spawn_goombas(3700, 352, False)
             self.spawn_goombas(3750, 352, False)
+            self.is_mob_spawned[2] = True
+            
+        elif self.get_player().rect.x > 3600 and not self.is_mob_spawned[3]:
             self.spawn_goombas(4060, 352, False)
             self.spawn_goombas(4110, 352, False)
             self.spawn_goombas(4190, 352, False)
