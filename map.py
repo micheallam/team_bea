@@ -254,7 +254,7 @@ class Map(object):
                 self.time -= 1
                 self.tick = 0
             if self.time == 100 and self.tick == 1:
-                main.get_sound().start_fast_music(main)
+                main.get_sound().fast_music(main)
             elif self.time == 0:
                 self.player_death(main)
 
