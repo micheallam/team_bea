@@ -33,5 +33,5 @@ class game_ui(object):
         main.screen.blit(text, rect)
 
         text = self.font.render(str(main.get_map().get_player().lives), False, (255, 255, 255))
-        rect = text.get_rect(center=(730, 35))
+        rect = text.get_rect(center=(730, 100))
         main.screen.blit(text, rect)
